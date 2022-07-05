@@ -1,0 +1,10 @@
+if (!require("shiny")) install.packages("shiny")
+if (!require("shinyBS")) install.packages("shinyBS")
+if (!require("DT")) install.packages("DT")
+if (!require("ggplot2")) install.packages("ggplot2")
+if (!require("shinyalert")) install.packages("shinyalert")
+if (!require("data.table")) install.packages("data.table")
+if (!require("plotly")) install.packages("plotly")
+if (!require("stringr")) install.packages("stringr")
+
+print("global done")
