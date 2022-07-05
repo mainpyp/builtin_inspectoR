@@ -1,9 +1,4 @@
-library(shiny)
-library(shinyBS)
-library(DT)
-library(ggplot2)
-library(shinyalert)
-library(data.table)
+source("global.R")
 source("interactive_table_functions.R")
 
 all_datasets <- as.list(as.data.table(data()$results)$Item)
@@ -24,16 +19,28 @@ server <- function(input, output, session){
 
         dat <- tryCatch(
           {
-              get( data_id  )
+              as.data.table(get( data_id  ))
           },
           warning= function(cond) {
             message(paste0(data_id, " not found."))
             message(cond)
-            return
+            return()
           })
-        if(typeof(dat) != "list") {
-          shinyalert(sprintf("%s not a list", data_id))
-          return()
+        
+        type_of_dat <- typeof(get(data_id))
+        
+        tryCatch(
+          {
+            as.data.table(dat)
+          },
+          warning= function(cond) {
+            shinyalert(sprintf("%s not convertable to data.table", data_id))
+            message(cond)
+            return()
+          })
+        
+        if(type_of_dat != "list") {
+          shinyalert(sprintf("%s not a list, but of type %s", data_id, type_of_dat))
         }
 
         if(length(dat) == 0) {
