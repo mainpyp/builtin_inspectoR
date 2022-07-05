@@ -1,16 +1,10 @@
-library(shiny)
-library(shinyBS)
-library(DT)
-library(ggplot2)
-library(data.table)
-library(plotly)
-
 process_table <- function(data, id) {
   buttons <- create_buttons(data, id)
   datatable <- create_datatable(data, buttons)
   modals <- create_modals(data, id)
   get_datatable()
 }
+
 
 create_buttons <- function(dat, file) {
     if(length(dat) != 0 ){
@@ -27,6 +21,7 @@ create_buttons <- function(dat, file) {
         })
     }
 }
+
 
 # Arguments
 # editable = T,
@@ -61,6 +56,7 @@ create_datatable <- function(dat, buttons, y_size=800) {
   )
 }
 
+
 create_modals <- function(dat, file) {
   lapply(1:ncol(dat), function(i) {
     bsModal(
@@ -88,6 +84,7 @@ create_modals <- function(dat, file) {
     )
   })
 }
+
 
 create_modal_plots <- function(input, dat, file, index) {
   if( is_continous( dat[[index]]) ) {
@@ -126,6 +123,7 @@ create_modal_plots <- function(input, dat, file, index) {
     gg + theme(axis.title = element_text(size = 16))
   }
 }
+
 
 is_continous <- function(column, n_unique = 19) {
   if( is.numeric( column ) && (length(unique( column )) > n_unique)){
