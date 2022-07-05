@@ -129,13 +129,10 @@ create_modal_plots <- function(input, dat, file, index) {
 
 is_continous <- function(column, n_unique = 19) {
   if( is.numeric( column ) && (length(unique( column )) > n_unique)){
-    print("IM IN")
     return(TRUE)
   } else {
     return(FALSE)
   }
 }
-
-# TODO: function that checks if column is numerical or not (for tests)
 
 

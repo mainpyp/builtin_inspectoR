@@ -60,7 +60,6 @@ server <- function(input, output, session){
         for(i in 1:ncol(dat)){
           local({
             ii <- i
-            print(ii)
             output[[paste0("plot",ii)]] <- renderPlot({
               create_modal_plots(input, dat, file=data_id, index=ii)
             })
