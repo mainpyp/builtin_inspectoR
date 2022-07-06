@@ -57,13 +57,13 @@ create_datatable <- function(dat, buttons, y_size=800) {
 }
 
 
-create_modals <- function(dat, file) {
+create_modals <- function(dat, file, n_cont) {
   lapply(1:ncol(dat), function(i) {
     bsModal(
       id = paste0(file, "modal", i),
       title = names(dat)[i],
       trigger = paste0("this_is_not_used", i),
-      if (is_continous(dat[[i]])) {
+      if (is_continous(dat[[i]], n_cont)) {
         fluidRow(
           column(5, radioButtons(paste0(file, "radio", i), "",
                                  c("density", "histogram", "point"),
@@ -86,9 +86,8 @@ create_modals <- function(dat, file) {
 }
 
 
-create_modal_plots <- function(input, dat, file, index) {
-  if( is_continous( dat[[index]]) ) {
-
+create_modal_plots <- function(input, dat, file, index, n_cont) {
+  if( is_continous( dat[[index]], n_cont) ) {
     button_name <- paste0(file, "radio", index)
 
     if(input[[button_name]] == "density"){
@@ -126,6 +125,7 @@ create_modal_plots <- function(input, dat, file, index) {
 
 
 is_continous <- function(column, n_unique = 19) {
+  n_unique <- as.integer(n_unique)
   if( is.numeric( column ) && (length(unique( column )) > n_unique)){
     return(TRUE)
   } else {
