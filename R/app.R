@@ -6,16 +6,19 @@ all_datasets <- sapply(as.list(as.data.table(data()$results)$Item), str_split, p
 all_datasets <- sapply(all_datasets,"[[", 1)
 
 ui <- fluidPage(
-    selectInput("data", label = "Select Datatable",
+    selectInput("Data", label = "Select Datatable",
               choices = all_datasets, selected = "mtcars"),
+    selectInput("n_cont", label = "Select Continous Threshold",
+                choices = 3:35, selected = 19),
     uiOutput("modals"),
     DTOutput("table")
 )
 
 server <- function(input, output, session){
-      observeEvent(input$data, {
+      observeEvent(input$Data, {
 
-        data_id <- input$data
+        data_id <- input$Data
+        threshold <- input$n_cont
 
         dat <- tryCatch(
           {
@@ -59,7 +62,7 @@ server <- function(input, output, session){
 
         # modals ####
         output[["modals"]] <- renderUI({
-          create_modals(dat, file = data_id)
+          create_modals(dat, file = data_id, threshold)
         })
 
 
@@ -68,14 +71,11 @@ server <- function(input, output, session){
           local({
             ii <- i
             output[[paste0("plot",ii)]] <- renderPlot({
-              create_modal_plots(input, dat, file=data_id, index=ii)
+              create_modal_plots(input, dat, file=data_id, index=ii, threshold)
             })
           })
         }
-
       })
-
-
 }
 
 shinyApp(ui, server)
