@@ -16,7 +16,7 @@ ui <- fluidPage(
 )
 
 server <- function(input, output, session){
-      observeEvent(input$Data, {
+      observeEvent(c(input$Data, input$n_cont), {
 
         data_id <- input$Data
         threshold <- input$n_cont
