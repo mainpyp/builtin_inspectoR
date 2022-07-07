@@ -10,6 +10,7 @@ ui <- fluidPage(
               choices = all_datasets, selected = "mtcars"),
     selectInput("n_cont", label = "Select Continous Threshold",
                 choices = 3:35, selected = 19),
+    checkboxInput("verbose", "Show if data not list"),
     uiOutput("modals"),
     DTOutput("table")
 )
@@ -22,7 +23,11 @@ server <- function(input, output, session){
 
         dat <- tryCatch(
           {
-              as.data.table(get( data_id  ))
+            scraped <- get( data_id  )
+            type_scraped <- typeof(scraped)
+            
+            as.data.table(scraped)
+            
           },
           warning= function(cond) {
             message(paste0(data_id, " not found."))
@@ -42,7 +47,7 @@ server <- function(input, output, session){
             return()
           })
         
-        if(type_of_dat != "list") {
+        if(type_of_dat != "list" && input$verbose) {
           shinyalert(sprintf("%s not a list, but of type %s", data_id, type_of_dat))
         }
 
