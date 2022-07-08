@@ -103,7 +103,7 @@ create_modal_plots <- function(input, dat, file, index, n_cont) {
       ggplot(dat, aes_string(y = names(dat)[index])) +
         geom_point(aes(x = rownames(dat))) +
         theme_minimal() +
-        xlab("Index")
+        xlab("Index") +
         theme(axis.title = element_text(size = 16), axis.text.x = element_text(angle = 90))
     }
   } else {
