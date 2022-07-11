@@ -100,11 +100,16 @@ create_modal_plots <- function(input, dat, file, index, n_cont) {
         geom_histogram(bins = input[[paste0(file, "slider", index)]]) +
         theme_minimal() + theme(axis.title = element_text(size = 16))
     } else {
-      ggplot(dat, aes_string(y = names(dat)[index])) +
+      point_plot <- ggplot(dat, aes_string(y = names(dat)[index])) +
         geom_point(aes(x = rownames(dat))) +
         theme_minimal() +
         xlab("Index") +
+        geom_label_repel(aes(x = rownames(dat), label = rownames(dat)),
+                         box.padding   = 0.35, 
+                         point.padding = 0.5,
+                         segment.color = 'grey50') +
         theme(axis.title = element_text(size = 16), axis.text.x = element_text(angle = 90))
+      return(point_plot)
     }
   } else {
     dat[[".x"]] <-
